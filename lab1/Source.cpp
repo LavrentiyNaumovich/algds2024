@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Source.h"
-#pragma warning(disable 4996)
+
 #define INF 1000000000 // Большое число, заменяющее бесконечность
 
 int Min(int a, int b, int c) {
@@ -11,23 +11,7 @@ int Min(int a, int b, int c) {
     return min_val;
 }
 
-int main() {
-    int n, m;
-    printf("Введите количество строк и столбцов матрицы (через пробел): ");
-    scanf_s("%d %d", &n, &m);
-
-    int** A = (int**)malloc(n * sizeof(int*));
-    for (int i = 0; i < n; i++) {
-        A[i] = (int*)malloc(m * sizeof(int));
-    }
-
-    printf("Введите элементы матрицы (по строкам, через пробел):\n");
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            scanf_s("%d", &A[i][j]);
-        }
-    }
-
+int calculateMinimumPenalty(int** A, int n, int m) {
     int** dp = (int**)malloc(n * sizeof(int*));
     for (int i = 0; i < n; i++) {
         dp[i] = (int*)malloc(m * sizeof(int));
@@ -56,15 +40,41 @@ int main() {
         }
     }
 
+    // Освобождаем выделенную память
+    for (int i = 0; i < n; i++) {
+        free(dp[i]);
+    }
+    free(dp);
+
+    return min_penalty;
+}
+
+int main() {
+    int n, m;
+    printf("Введите количество строк и столбцов матрицы (через пробел): ");
+    scanf_s("%d %d", &n, &m);
+
+    int** A = (int**)malloc(n * sizeof(int*));
+    for (int i = 0; i < n; i++) {
+        A[i] = (int*)malloc(m * sizeof(int));
+    }
+
+    printf("Введите элементы матрицы (по строкам, через пробел):\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            scanf_s("%d", &A[i][j]);
+        }
+    }
+
+    int min_penalty = calculateMinimumPenalty(A, n, m);
+
     printf("Минимальный штраф: %d\n", min_penalty);
 
     // Освобождаем выделенную память
     for (int i = 0; i < n; i++) {
         free(A[i]);
-        free(dp[i]);
     }
     free(A);
-    free(dp);
 
     return 0;
 }
