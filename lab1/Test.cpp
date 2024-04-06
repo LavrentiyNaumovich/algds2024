@@ -35,7 +35,29 @@ TEST(MinFunction_Test, ThreeIntegers_MaximumReturned) {
     // Assert
     EXPECT_EQ(result, 10);
 }
+TEST(MinimumPenalty_Test, SampleMatrix_MinimumPenaltyCalculated) {
+    // Arrange
+    int n = 3, m = 3;
+    int** A = (int**)malloc(n * sizeof(int*));
+    for (int i = 0; i < n; i++) {
+        A[i] = (int*)malloc(m * sizeof(int));
+    }
+    A[0][0] = 1; A[0][1] = 2; A[0][2] = 3;
+    A[1][0] = 4; A[1][1] = 5; A[1][2] = 6;
+    A[2][0] = 7; A[2][1] = 8; A[2][2] = 9;
 
+    // Act
+    int result = calculateMinimumPenalty(A, n, m);
+
+    // Assert
+    EXPECT_EQ(result, 14);
+
+    // Clean up
+    for (int i = 0; i < n; i++) {
+        free(A[i]);
+    }
+    free(A);
+}
 int Car(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
